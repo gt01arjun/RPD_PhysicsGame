@@ -22,11 +22,6 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            var allPlatforms = FindObjectsOfType<Platform>();
-            foreach (var platform in allPlatforms)
-            {
-                platform.GetComponent<BoxCollider>().enabled = true;
-            }
             _ball.SetActive(true);
             _prepCamera.SetActive(false);
             _gameCamera.SetActive(true);
