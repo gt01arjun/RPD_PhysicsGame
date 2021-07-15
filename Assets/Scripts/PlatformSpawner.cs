@@ -15,6 +15,11 @@ public class PlatformSpawner : MonoBehaviour
 
     private Color _color = Color.red;
 
+    private string _axisLockName;
+    private float _axisLockValue;
+
+    private RaycastHit hit;
+
     private void Start()
     {
         _canSpawn = true;
@@ -26,27 +31,82 @@ public class PlatformSpawner : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && _canSpawn)
         {
-            SpawnPlatform();
-            _canSpawn = false;
-            _canPlace = true;
+            if (CheckWall())
+            {
+                SpawnPlatform();
+                _canSpawn = false;
+                _canPlace = true;
+            }
         }
-
         else if (Input.GetMouseButtonDown(0) && _canPlace)
         {
             PlacePlatform();
             _canPlace = false;
             _canSpawn = true;
         }
+
+        if (_canPlace)
+        {
+            Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit);
+            switch (_axisLockName)
+            {
+                case "X":
+                    _currentPlatform.transform.position = new Vector3(_axisLockValue, hit.point.y, hit.point.z);
+                    break;
+
+                case "Y":
+                    _currentPlatform.transform.position = new Vector3(hit.point.x, _axisLockValue, hit.point.z);
+                    break;
+
+                case "Z":
+                    _currentPlatform.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * 100, Color.blue);
+    }
+
+    private bool CheckWall()
+    {
+        if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit))
+        {
+            _axisLockName = hit.collider.GetComponent<Wall>().LockedAxisName;
+            _axisLockValue = hit.collider.GetComponent<Wall>().LockedAxisValue;
+            return true;
+        }
+        return false;
     }
 
     private void SpawnPlatform()
     {
-        Vector3 spawnPos = _mainCamera.transform.position + _mainCamera.transform.forward * 10 + _mainCamera.transform.up * -2;
+        Vector3 spawnPos = new Vector3();
+
+        switch (_axisLockName)
+        {
+            case "X":
+                spawnPos = new Vector3(_axisLockValue, hit.point.y, hit.point.z);
+                break;
+
+            case "Y":
+                spawnPos = new Vector3(hit.point.x, _axisLockValue, hit.point.z);
+                break;
+
+            case "Z":
+                spawnPos = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
+                break;
+
+            default:
+                break;
+        }
+
         _currentPlatform = Instantiate(_platformPrefab, spawnPos, Quaternion.identity);
         _color.a = 0.4f;
         _currentPlatform.GetComponent<MeshRenderer>().material.color = _color;
-        _currentPlatform.transform.SetParent(_mainCamera.transform);
-        _currentPlatform.transform.localRotation = Quaternion.identity;
     }
 
     private void PlacePlatform()
@@ -54,6 +114,5 @@ public class PlatformSpawner : MonoBehaviour
         _color.a = 1f;
         _currentPlatform.GetComponent<MeshRenderer>().material.color = _color;
         _currentPlatform.GetComponent<Platform>().enabled = false;
-        _currentPlatform.transform.parent = null;
     }
 }
