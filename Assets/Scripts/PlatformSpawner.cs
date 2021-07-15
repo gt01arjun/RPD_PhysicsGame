@@ -48,11 +48,15 @@ public class PlatformSpawner : MonoBehaviour
         if (isDeleteMode == false)
         {
             _deletePlatformHelperSphere.SetActive(false);
+            if (_currentPlatform)
+                _currentPlatform.SetActive(true);
             CreateMode();
         }
         else
         {
             _deletePlatformHelperSphere.SetActive(true);
+            if (_currentPlatform)
+                _currentPlatform.SetActive(false);
             DeleteMode();
         }
 
@@ -80,8 +84,11 @@ public class PlatformSpawner : MonoBehaviour
     {
         if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit))
         {
-            _axisLockValue = hit.collider.GetComponent<Wall>().LockedAxisValue;
-            return true;
+            if (hit.collider.GetComponent<Wall>())
+            {
+                _axisLockValue = hit.collider.GetComponent<Wall>().LockedAxisValue;
+                return true;
+            }
         }
         return false;
     }
@@ -107,7 +114,7 @@ public class PlatformSpawner : MonoBehaviour
 
     private void CreateMode()
     {
-        if (Input.GetMouseButtonDown(0) && _canSpawn)
+        if (_canSpawn)
         {
             if (CheckWall())
             {
