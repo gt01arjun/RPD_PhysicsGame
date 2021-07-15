@@ -787,6 +787,10 @@ MonoBehaviour:
   _canSpawn: 0
   _canPlace: 0
   _deletePlatformHelperSphere: {fileID: 526457897}
+  _platformPrefabs:
+  - {fileID: 4026905334311968209, guid: 841eb37c0c549744e83fb1ab7c6e9a35, type: 3}
+  - {fileID: 4026905334311968209, guid: 414c4560108d57248a34f96ac0470b66, type: 3}
+  - {fileID: 4026905334311968209, guid: 0a51a1745bf2b0846880aa0a05c1c73b, type: 3}
 --- !u!4 &1337809649
 Transform:
   m_ObjectHideFlags: 0
@@ -1021,7 +1025,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a19a2edcce857894dbd230d4d4ebe133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LockedAxisName: Z
   LockedAxisValue: 22.5
 --- !u!1 &1822338239
 GameObject:
