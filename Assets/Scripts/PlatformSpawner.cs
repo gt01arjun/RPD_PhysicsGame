@@ -13,6 +13,9 @@ public class PlatformSpawner : MonoBehaviour
     [SerializeField]
     private GameObject _deletePlatformHelperSphere;
 
+    [SerializeField]
+    private GameObject[] _platformPrefabs;
+
     private GameObject _currentPlatform;
     private GameObject _mainCamera;
 
@@ -24,12 +27,15 @@ public class PlatformSpawner : MonoBehaviour
 
     private bool isDeleteMode;
 
+    private int _currentScrollIndex;
+
     private void Start()
     {
         _canSpawn = true;
         _canPlace = false;
         _mainCamera = Camera.main.gameObject;
         isDeleteMode = false;
+        _currentScrollIndex = 0;
     }
 
     private void Update()
@@ -48,6 +54,25 @@ public class PlatformSpawner : MonoBehaviour
         {
             _deletePlatformHelperSphere.SetActive(true);
             DeleteMode();
+        }
+
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f) // forward
+        {
+            _currentScrollIndex++;
+            if (_currentScrollIndex > _platformPrefabs.Length - 1)
+            {
+                _currentScrollIndex = 0;
+            }
+            _platformPrefab = _platformPrefabs[_currentScrollIndex];
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backwards
+        {
+            _currentScrollIndex--;
+            if (_currentScrollIndex < 0)
+            {
+                _currentScrollIndex = _platformPrefabs.Length - 1;
+            }
+            _platformPrefab = _platformPrefabs[_currentScrollIndex];
         }
     }
 
