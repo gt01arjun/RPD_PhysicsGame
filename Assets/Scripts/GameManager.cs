@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     private Vector3 _ballInitialPos;
 
-    private bool _isPrepMode;
+    public bool _isPrepMode;
 
     private void Start()
     {
