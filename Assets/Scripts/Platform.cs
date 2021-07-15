@@ -2,20 +2,19 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    private float yaw;
-    private float pitch;
-
     [SerializeField]
     private float _rotateSpeed;
 
     private void Update()
     {
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.D))
         {
-            yaw += _rotateSpeed * Input.GetAxis("Mouse X") * Time.deltaTime;
-            pitch -= _rotateSpeed * Input.GetAxis("Mouse Y") * Time.deltaTime;
+            transform.Rotate(0f, 0f, (int)transform.rotation.z - Time.deltaTime * _rotateSpeed);
+        }
 
-            transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        else if (Input.GetMouseButton(1) && Input.GetKey(KeyCode.A))
+        {
+            transform.Rotate(0f, 0f, (int)transform.rotation.z + Time.deltaTime * _rotateSpeed);
         }
     }
 }
