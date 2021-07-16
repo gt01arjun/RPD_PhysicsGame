@@ -116,7 +116,7 @@ public class PlatformSpawner : MonoBehaviour
         _color.a = 1f;
         _currentPlatform.GetComponent<MeshRenderer>().material.color = _color;
         _currentPlatform.GetComponent<Platform>().enabled = false;
-        _currentPlatform.GetComponent<BoxCollider>().enabled = true;
+        _currentPlatform.GetComponent<Collider>().enabled = true;
     }
 
     private void CreateMode()
