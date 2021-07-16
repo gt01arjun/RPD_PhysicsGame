@@ -25,14 +25,11 @@ public class PlatformSpawner : MonoBehaviour
     private float _axisLockValue;
 
     [SerializeField]
-    private AudioSource _mouseScrollAudioSource;
-
-    [SerializeField]
     private AudioSource _plankAttachedAudioSource;
 
     public static GameObject CurrentPlatform;
     private GameObject _mainCamera;
-    
+
     private RaycastHit hit;
 
     private bool isDeleteMode;
@@ -102,8 +99,6 @@ public class PlatformSpawner : MonoBehaviour
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0f && _platformPrefabs.Count > 0) // forward
         {
-            _mouseScrollAudioSource.Stop();
-            _mouseScrollAudioSource.Play();
             _currentScrollIndex++;
             if (_currentScrollIndex > _platformPrefabs.Count - 1)
             {
@@ -118,8 +113,6 @@ public class PlatformSpawner : MonoBehaviour
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f && _platformPrefabs.Count > 0) // backwards
         {
-            _mouseScrollAudioSource.Stop();
-            _mouseScrollAudioSource.Play();
             _currentScrollIndex--;
             if (_currentScrollIndex < 0)
             {
