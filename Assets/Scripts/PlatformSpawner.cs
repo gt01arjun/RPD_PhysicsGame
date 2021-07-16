@@ -71,7 +71,7 @@ public class PlatformSpawner : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.RightShift) && _platformPrefabs.Count > 0)
         {
             isDeleteMode = !isDeleteMode;
         }
@@ -166,7 +166,6 @@ public class PlatformSpawner : MonoBehaviour
         {
             LevelManager.CurvedPlankCounter--;
 
-            Debug.Log(LevelManager.CurvedPlankCounter);
 
             if (LevelManager.CurvedPlankCounter <= 0)
             {
@@ -241,6 +240,7 @@ public class PlatformSpawner : MonoBehaviour
         {
             _platformPrefab = null;
             CurrentPlatform = null;
+            isDeleteMode = !isDeleteMode;
         }
     }
 }
