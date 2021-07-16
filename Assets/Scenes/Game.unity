@@ -2285,7 +2285,7 @@ GameObject:
   - component: {fileID: 1337809648}
   m_Layer: 0
   m_Name: PlatformSpawner
-  m_TagString: Untagged
+  m_TagString: HalfPlank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2311,6 +2311,11 @@ MonoBehaviour:
   - {fileID: 8883023245234375013, guid: 34b655a6a22b45f40b33ac0bba516926, type: 3}
   - {fileID: 9144196437056485971, guid: 6058525fd24e2d548bc912525d8ce6a3, type: 3}
   _woodOpaque: {fileID: 2100000, guid: 22ac36842a9135a40a1bf7c1290eb47f, type: 2}
+  _axisLockValue: 28.684
+  _backupPlatforms:
+  - {fileID: 5042075581225574164, guid: 204af8edd8ac96648bda36ff266a764a, type: 3}
+  - {fileID: 8883023245234375013, guid: 34b655a6a22b45f40b33ac0bba516926, type: 3}
+  - {fileID: 9144196437056485971, guid: 6058525fd24e2d548bc912525d8ce6a3, type: 3}
 --- !u!4 &1337809649
 Transform:
   m_ObjectHideFlags: 0
@@ -3163,7 +3168,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1822338239}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 117952bf880da8c45861cab71c3f78ba, type: 3}
   m_Name: 

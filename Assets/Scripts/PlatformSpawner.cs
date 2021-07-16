@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlatformSpawner : MonoBehaviour
 {
@@ -23,6 +25,7 @@ public class PlatformSpawner : MonoBehaviour
     public static GameObject CurrentPlatform;
     private GameObject _mainCamera;
 
+    [SerializeField]
     private float _axisLockValue;
 
     private RaycastHit hit;
@@ -30,6 +33,27 @@ public class PlatformSpawner : MonoBehaviour
     private bool isDeleteMode;
 
     private int _currentScrollIndex;
+
+    public static UnityEvent<string> AddToPrefabList = new UnityEvent<string>();
+
+    [SerializeField]
+    private List<GameObject> _backupPlatforms;
+
+    private void OnEnable()
+    {
+        AddToPrefabList.AddListener(AddToList);
+    }
+
+    private void AddToList(string tagName)
+    {
+        foreach (var plank in _backupPlatforms)
+        {
+            if (plank.CompareTag(tagName))
+            {
+                _platformPrefabs.Add(plank);
+            }
+        }
+    }
 
     private void Start()
     {
@@ -57,7 +81,8 @@ public class PlatformSpawner : MonoBehaviour
             _deletePlatformHelperSphere.SetActive(false);
             if (CurrentPlatform)
                 CurrentPlatform.SetActive(true);
-            CreateMode();
+            if (_platformPrefab)
+                CreateMode();
         }
         else
         {
@@ -66,6 +91,9 @@ public class PlatformSpawner : MonoBehaviour
                 CurrentPlatform.SetActive(false);
             DeleteMode();
         }
+
+        if (isDeleteMode)
+            return;
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0f && _platformPrefabs.Count > 0) // forward
         {
@@ -78,6 +106,8 @@ public class PlatformSpawner : MonoBehaviour
 
             Destroy(CurrentPlatform);
             SpawnPlatform();
+            _canSpawn = false;
+            _canPlace = true;
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f && _platformPrefabs.Count > 0) // backwards
         {
@@ -90,6 +120,8 @@ public class PlatformSpawner : MonoBehaviour
 
             Destroy(CurrentPlatform);
             SpawnPlatform();
+            _canSpawn = false;
+            _canPlace = true;
         }
     }
 
@@ -97,9 +129,8 @@ public class PlatformSpawner : MonoBehaviour
     {
         if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit))
         {
-            if (hit.collider.GetComponent<Wall>())
+            if (hit.collider.GetComponent<Wall>() || hit.collider.GetComponent<Platform>())
             {
-                _axisLockValue = hit.collider.GetComponent<Wall>().LockedAxisValue;
                 return true;
             }
         }
@@ -121,38 +152,38 @@ public class PlatformSpawner : MonoBehaviour
         CurrentPlatform.GetComponent<Platform>().enabled = false;
         CurrentPlatform.GetComponent<Collider>().enabled = true;
 
-        //if (CurrentPlatform.CompareTag("HalfPlank"))
-        //{
-        //    LevelManager.HalfPlankCounter--;
+        if (CurrentPlatform.CompareTag("HalfPlank"))
+        {
+            LevelManager.HalfPlankCounter--;
 
-        //    if (LevelManager.HalfPlankCounter <= 0)
-        //    {
-        //        _platformPrefabs.RemoveAt(_currentScrollIndex);
-        //        ModifyIndex();
-        //    }
-        //}
-        //else if (CurrentPlatform.CompareTag("CurvedPlank"))
-        //{
-        //    LevelManager.CurvedPlankCounter--;
+            if (LevelManager.HalfPlankCounter <= 0)
+            {
+                _platformPrefabs.RemoveAt(_currentScrollIndex);
+                ModifyIndex();
+            }
+        }
+        else if (CurrentPlatform.CompareTag("CurvedPlank"))
+        {
+            LevelManager.CurvedPlankCounter--;
 
-        //    Debug.Log(LevelManager.CurvedPlankCounter);
+            Debug.Log(LevelManager.CurvedPlankCounter);
 
-        //    if (LevelManager.CurvedPlankCounter <= 0)
-        //    {
-        //        _platformPrefabs.RemoveAt(_currentScrollIndex);
-        //        ModifyIndex();
-        //    }
-        //}
-        //else if (CurrentPlatform.CompareTag("FlatPlank"))
-        //{
-        //    LevelManager.FlatPlankCounter--;
+            if (LevelManager.CurvedPlankCounter <= 0)
+            {
+                _platformPrefabs.RemoveAt(_currentScrollIndex);
+                ModifyIndex();
+            }
+        }
+        else if (CurrentPlatform.CompareTag("FlatPlank"))
+        {
+            LevelManager.FlatPlankCounter--;
 
-        //    if (LevelManager.FlatPlankCounter <= 0)
-        //    {
-        //        _platformPrefabs.RemoveAt(_currentScrollIndex);
-        //        ModifyIndex();
-        //    }
-        //}
+            if (LevelManager.FlatPlankCounter <= 0)
+            {
+                _platformPrefabs.RemoveAt(_currentScrollIndex);
+                ModifyIndex();
+            }
+        }
     }
 
     private void CreateMode()
@@ -191,9 +222,8 @@ public class PlatformSpawner : MonoBehaviour
     {
         if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit))
         {
-            if (hit.collider.GetComponent<Wall>())
+            if (hit.collider.GetComponent<Wall>() || hit.collider.GetComponent<Platform>())
             {
-
                 _deletePlatformHelperSphere.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
             }
         }
@@ -205,6 +235,12 @@ public class PlatformSpawner : MonoBehaviour
         if (_platformPrefabs.Count > 0)
         {
             _currentScrollIndex = 0;
+            _platformPrefab = _platformPrefabs[_currentScrollIndex];
+        }
+        else
+        {
+            _platformPrefab = null;
+            CurrentPlatform = null;
         }
     }
 }
