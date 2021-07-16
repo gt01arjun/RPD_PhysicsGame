@@ -115,4 +115,9 @@ public class LevelManager : MonoBehaviour
     {
         SceneManager.LoadScene("LevelSelection");
     }
+
+    public void RetryLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
