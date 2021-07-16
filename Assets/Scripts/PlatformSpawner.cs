@@ -19,7 +19,7 @@ public class PlatformSpawner : MonoBehaviour
     private GameObject _currentPlatform;
     private GameObject _mainCamera;
 
-    private Color _color = Color.red;
+    private Color _color;
 
     private float _axisLockValue;
 
@@ -68,6 +68,9 @@ public class PlatformSpawner : MonoBehaviour
                 _currentScrollIndex = 0;
             }
             _platformPrefab = _platformPrefabs[_currentScrollIndex];
+
+            Destroy(_currentPlatform);
+            SpawnPlatform();
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backwards
         {
@@ -77,6 +80,9 @@ public class PlatformSpawner : MonoBehaviour
                 _currentScrollIndex = _platformPrefabs.Length - 1;
             }
             _platformPrefab = _platformPrefabs[_currentScrollIndex];
+
+            Destroy(_currentPlatform);
+            SpawnPlatform();
         }
     }
 
@@ -100,6 +106,7 @@ public class PlatformSpawner : MonoBehaviour
         spawnPos = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
 
         _currentPlatform = Instantiate(_platformPrefab, spawnPos, Quaternion.identity);
+        _color = _currentPlatform.GetComponent<MeshRenderer>().material.color;
         _color.a = 0.4f;
         _currentPlatform.GetComponent<MeshRenderer>().material.color = _color;
     }
