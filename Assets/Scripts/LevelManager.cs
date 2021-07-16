@@ -95,7 +95,10 @@ public class LevelManager : MonoBehaviour
             _ball.GetComponent<Rigidbody>().useGravity = true;
             _prepCamera.SetActive(false);
             _gameCamera.SetActive(true);
-            PlatformSpawner.CurrentPlatform.SetActive(false);
+            if (PlatformSpawner.CurrentPlatform != null)
+            {
+                PlatformSpawner.CurrentPlatform.SetActive(false);
+            }
             IsPrepMode = false;
             _deletePlatformHelperSphere.SetActive(false);
             LevelManager.RetriesLeftCounter--;
@@ -105,7 +108,10 @@ public class LevelManager : MonoBehaviour
             _ball.GetComponent<Rigidbody>().useGravity = false;
             _prepCamera.SetActive(true);
             _gameCamera.SetActive(false);
-            PlatformSpawner.CurrentPlatform.SetActive(true);
+            if (PlatformSpawner.CurrentPlatform != null)
+            {
+                PlatformSpawner.CurrentPlatform.SetActive(true);
+            }
             IsPrepMode = true;
 
             ResetBall();
@@ -122,6 +128,7 @@ public class LevelManager : MonoBehaviour
         if (IsGameOver)
             return;
 
+        Cursor.lockState = CursorLockMode.None;
         IsGameOver = true;
         _winScreen.SetActive(true);
         _inGameScreen.SetActive(false);
@@ -148,6 +155,7 @@ public class LevelManager : MonoBehaviour
         if (IsGameOver)
             return;
 
+        Cursor.lockState = CursorLockMode.None;
         IsGameOver = true;
         _loseScreen.SetActive(true);
         _inGameScreen.SetActive(false);

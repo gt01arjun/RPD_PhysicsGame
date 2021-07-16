@@ -3451,7 +3451,7 @@ MonoBehaviour:
   _deletePlatformHelperSphere: {fileID: 526457897}
   _winScreen: {fileID: 2015934628}
   _loseScreen: {fileID: 751800612}
-  _inGameScreen: {fileID: 0}
+  _inGameScreen: {fileID: 81217960}
   _levels:
   - {fileID: 1225474358}
   - {fileID: 1578162233}
