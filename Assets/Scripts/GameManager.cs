@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return) && IsPrepMode)
         {
-            _ball.SetActive(true);
             _ball.GetComponent<Rigidbody>().useGravity = true;
             _prepCamera.SetActive(false);
             _gameCamera.SetActive(true);
@@ -34,19 +33,25 @@ public class GameManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Return) && !IsPrepMode)
         {
-            _ball.SetActive(false);
             _ball.GetComponent<Rigidbody>().useGravity = false;
             _prepCamera.SetActive(true);
             _gameCamera.SetActive(false);
             PlatformSpawner.CurrentPlatform.SetActive(true);
             IsPrepMode = true;
+
+            ResetBall();
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            _ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-            _ball.transform.position = _ballInitialPos;
+            ResetBall();
         }
+    }
+
+    private void ResetBall()
+    {
+        _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        _ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        _ball.transform.position = _ballInitialPos;
     }
 }
