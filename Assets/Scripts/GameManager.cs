@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _gameCamera;
 
+    [SerializeField]
+    private GameObject _deletePlatformHelperSphere;
+
     private Vector3 _ballInitialPos;
 
     public static bool IsPrepMode;
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour
             _gameCamera.SetActive(true);
             PlatformSpawner.CurrentPlatform.SetActive(false);
             IsPrepMode = false;
+            _deletePlatformHelperSphere.SetActive(false);
         }
         else if (Input.GetKeyDown(KeyCode.Return) && !IsPrepMode)
         {

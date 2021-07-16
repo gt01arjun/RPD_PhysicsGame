@@ -30,7 +30,7 @@ public class DeleteHelperSphere : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && _canDelete)
+        if (Input.GetMouseButtonDown(0) && _canDelete && _deleteThisObject != null)
         {
             if (_deleteThisObject.CompareTag("HalfPlank"))
             {
