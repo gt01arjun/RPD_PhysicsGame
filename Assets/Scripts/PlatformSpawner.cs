@@ -19,7 +19,7 @@ public class PlatformSpawner : MonoBehaviour
     private GameObject _currentPlatform;
     private GameObject _mainCamera;
 
-    private Color _color = Color.red;
+    private Color _color;
 
     private float _axisLockValue;
 
@@ -48,11 +48,15 @@ public class PlatformSpawner : MonoBehaviour
         if (isDeleteMode == false)
         {
             _deletePlatformHelperSphere.SetActive(false);
+            if (_currentPlatform)
+                _currentPlatform.SetActive(true);
             CreateMode();
         }
         else
         {
             _deletePlatformHelperSphere.SetActive(true);
+            if (_currentPlatform)
+                _currentPlatform.SetActive(false);
             DeleteMode();
         }
 
@@ -64,6 +68,9 @@ public class PlatformSpawner : MonoBehaviour
                 _currentScrollIndex = 0;
             }
             _platformPrefab = _platformPrefabs[_currentScrollIndex];
+
+            Destroy(_currentPlatform);
+            SpawnPlatform();
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backwards
         {
@@ -73,6 +80,9 @@ public class PlatformSpawner : MonoBehaviour
                 _currentScrollIndex = _platformPrefabs.Length - 1;
             }
             _platformPrefab = _platformPrefabs[_currentScrollIndex];
+
+            Destroy(_currentPlatform);
+            SpawnPlatform();
         }
     }
 
@@ -80,8 +90,11 @@ public class PlatformSpawner : MonoBehaviour
     {
         if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit))
         {
-            _axisLockValue = hit.collider.GetComponent<Wall>().LockedAxisValue;
-            return true;
+            if (hit.collider.GetComponent<Wall>())
+            {
+                _axisLockValue = hit.collider.GetComponent<Wall>().LockedAxisValue;
+                return true;
+            }
         }
         return false;
     }
@@ -93,6 +106,7 @@ public class PlatformSpawner : MonoBehaviour
         spawnPos = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
 
         _currentPlatform = Instantiate(_platformPrefab, spawnPos, Quaternion.identity);
+        _color = _currentPlatform.GetComponent<MeshRenderer>().material.color;
         _color.a = 0.4f;
         _currentPlatform.GetComponent<MeshRenderer>().material.color = _color;
     }
@@ -107,7 +121,7 @@ public class PlatformSpawner : MonoBehaviour
 
     private void CreateMode()
     {
-        if (Input.GetMouseButtonDown(0) && _canSpawn)
+        if (_canSpawn)
         {
             if (CheckWall())
             {
@@ -125,8 +139,13 @@ public class PlatformSpawner : MonoBehaviour
 
         if (_canPlace)
         {
-            Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit);
-            _currentPlatform.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
+            if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit))
+            {
+                if (hit.collider.GetComponent<Wall>())
+                {
+                    _currentPlatform.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
+                }
+            }
         }
 
         Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * 100, Color.blue);
