@@ -36,7 +36,7 @@ public class Ball : MonoBehaviour
             LevelManager.GameWin.Invoke();
         }
 
-        if (_rb.velocity.magnitude <= 0 && _inPocket == false && LevelManager.RetriesLeftCounter <= 0)
+        if (_rb.velocity.magnitude <= 0.02f && _inPocket == false && LevelManager.RetriesLeftCounter <= 0)
         {
             LevelManager.GameLose.Invoke();
         }
