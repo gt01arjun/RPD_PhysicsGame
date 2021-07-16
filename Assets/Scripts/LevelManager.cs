@@ -19,8 +19,15 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private GameObject[] _levels;
 
+    [SerializeField]
+    private LevelData[] _levelData;
+
     private int _currentLevel;
     private int _maxLevel;
+
+    public static int CurvedPlankCounter;
+    public static int HalfPlankCounter;
+    public static int FlatPlankCounter;
 
     private void OnEnable()
     {
@@ -28,10 +35,18 @@ public class LevelManager : MonoBehaviour
         GameLose.AddListener(Lose);
         GameWin.AddListener(Win);
         IsGameOver = false;
-        _currentLevel = PlayerPrefs.GetInt("CURRENTLEVEL");
-        _maxLevel = PlayerPrefs.GetInt("MAXLEVEL");
+        //_currentLevel = PlayerPrefs.GetInt("CURRENTLEVEL");
+        //_maxLevel = PlayerPrefs.GetInt("MAXLEVEL");
 
-        _levels[_currentLevel - 1].SetActive(true);
+        //_levels[_currentLevel - 1].SetActive(true);
+
+        //CurvedPlankCounter = _levelData[_currentLevel - 1].CurvedPlankCounter;
+        //HalfPlankCounter = _levelData[_currentLevel - 1].HalfPlankCounter;
+        //FlatPlankCounter = _levelData[_currentLevel - 1].FlatPlankCounter;
+
+        CurvedPlankCounter = 3;
+        HalfPlankCounter = 3;
+        FlatPlankCounter = 3;
     }
 
     private void Win()
@@ -51,8 +66,8 @@ public class LevelManager : MonoBehaviour
             {
                 _currentLevel++;
                 _maxLevel = _currentLevel;
-                PlayerPrefs.SetInt("MAXLEVEL", _maxLevel);
-                PlayerPrefs.SetInt("CURRENTLEVEL", _currentLevel);
+                ////PlayerPrefs.SetInt("MAXLEVEL", _maxLevel);
+               // PlayerPrefs.SetInt("CURRENTLEVEL", _currentLevel);
             }
         }
         Time.timeScale = 0f;
