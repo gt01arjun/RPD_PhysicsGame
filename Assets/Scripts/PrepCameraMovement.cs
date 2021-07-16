@@ -35,8 +35,8 @@ public class PrepCameraMovement : MonoBehaviour
         yaw += _rotateSpeed * Input.GetAxis("Mouse X") * Time.deltaTime;
         pitch -= _rotateSpeed * Input.GetAxis("Mouse Y") * Time.deltaTime;
 
-        yaw = Mathf.Clamp(yaw, -30f, 30f);
-        pitch = Mathf.Clamp(pitch, -30f, 30f);
+       // yaw = Mathf.Clamp(yaw, -30f, 30f);
+       // pitch = Mathf.Clamp(pitch, -30f, 30f);
 
         transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
     }
