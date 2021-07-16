@@ -33,6 +33,9 @@ public class LevelManager : MonoBehaviour
     private GameObject _loseScreen;
 
     [SerializeField]
+    private GameObject _inGameScreen;
+
+    [SerializeField]
     private GameObject[] _levels;
 
     [SerializeField]
@@ -108,6 +111,11 @@ public class LevelManager : MonoBehaviour
 
             ResetBall();
         }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            PlayerPrefs.DeleteAll();
+        }
     }
 
     private void Win()
@@ -117,6 +125,8 @@ public class LevelManager : MonoBehaviour
 
         IsGameOver = true;
         _winScreen.SetActive(true);
+        _inGameScreen.SetActive(false);
+
         if (_currentLevel <= 3)
         {
             if (_currentLevel < _maxLevel)
@@ -127,8 +137,8 @@ public class LevelManager : MonoBehaviour
             {
                 _currentLevel++;
                 _maxLevel = _currentLevel;
-                ////PlayerPrefs.SetInt("MAXLEVEL", _maxLevel);
-                // PlayerPrefs.SetInt("CURRENTLEVEL", _currentLevel);
+                PlayerPrefs.SetInt("MAXLEVEL", _maxLevel);
+                PlayerPrefs.SetInt("CURRENTLEVEL", _currentLevel);
             }
         }
         Time.timeScale = 0f;
@@ -141,6 +151,7 @@ public class LevelManager : MonoBehaviour
 
         IsGameOver = true;
         _loseScreen.SetActive(true);
+        _inGameScreen.SetActive(false);
         Time.timeScale = 0f;
     }
 

@@ -35,7 +35,7 @@ public class DeleteHelperSphere : MonoBehaviour
             if (_deleteThisObject.CompareTag("HalfPlank"))
             {
                 LevelManager.HalfPlankCounter++;
-                if(LevelManager.HalfPlankCounter == 1)
+                if (LevelManager.HalfPlankCounter == 1)
                 {
                     PlatformSpawner.AddToPrefabList.Invoke("HalfPlank");
                 }
@@ -56,8 +56,7 @@ public class DeleteHelperSphere : MonoBehaviour
                     PlatformSpawner.AddToPrefabList.Invoke("FlatPlank");
                 }
             }
+            Destroy(_deleteThisObject);
         }
-
-        Destroy(_deleteThisObject);
     }
 }
