@@ -22,12 +22,26 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private LevelData[] _levelData;
 
+    [SerializeField]
+    private TMP_Text _curvedPlankText;
+
+    [SerializeField]
+    private TMP_Text _halfPlankText;
+
+    [SerializeField]
+    private TMP_Text _flatPlankText;
+
+    [SerializeField]
+    private TMP_Text _retriesLeftText;
+
     private int _currentLevel;
     private int _maxLevel;
 
     public static int CurvedPlankCounter;
     public static int HalfPlankCounter;
     public static int FlatPlankCounter;
+
+    public static int RetriesLeftCounter;
 
     private void OnEnable()
     {
@@ -47,6 +61,15 @@ public class LevelManager : MonoBehaviour
         CurvedPlankCounter = 3;
         HalfPlankCounter = 3;
         FlatPlankCounter = 3;
+        RetriesLeftCounter = 3;
+    }
+
+    private void Update()
+    {
+        _curvedPlankText.text = $"CURVED PLANKS     {CurvedPlankCounter}";
+        _halfPlankText.text = $"HALF PLANKS         {HalfPlankCounter}";
+        _flatPlankText.text = $"FLAT PLANKS          {FlatPlankCounter}";
+        _retriesLeftText.text = $"RETRIES LEFT          {RetriesLeftCounter}";
     }
 
     private void Win()
@@ -67,7 +90,7 @@ public class LevelManager : MonoBehaviour
                 _currentLevel++;
                 _maxLevel = _currentLevel;
                 ////PlayerPrefs.SetInt("MAXLEVEL", _maxLevel);
-               // PlayerPrefs.SetInt("CURRENTLEVEL", _currentLevel);
+                // PlayerPrefs.SetInt("CURRENTLEVEL", _currentLevel);
             }
         }
         Time.timeScale = 0f;

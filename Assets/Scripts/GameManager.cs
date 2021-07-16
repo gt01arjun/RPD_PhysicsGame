@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
             PlatformSpawner.CurrentPlatform.SetActive(false);
             IsPrepMode = false;
             _deletePlatformHelperSphere.SetActive(false);
+            LevelManager.RetriesLeftCounter--;
         }
         else if (Input.GetKeyDown(KeyCode.Return) && !IsPrepMode)
         {
@@ -46,10 +47,10 @@ public class GameManager : MonoBehaviour
             ResetBall();
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            ResetBall();
-        }
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    ResetBall();
+        //}
     }
 
     private void ResetBall()
