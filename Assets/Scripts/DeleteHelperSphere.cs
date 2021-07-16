@@ -33,6 +33,19 @@ public class DeleteHelperSphere : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && _canDelete)
         {
             Destroy(_deleteThisObject);
+
+            if (_deleteThisObject.CompareTag("HalfPlank"))
+            {
+                LevelManager.HalfPlankCounter++;
+            }
+            else if (_deleteThisObject.CompareTag("CurvedPlank"))
+            {
+                LevelManager.CurvedPlankCounter++;
+            }
+            else if (_deleteThisObject.CompareTag("FlatPlank"))
+            {
+                LevelManager.FlatPlankCounter++;
+            }
         }
     }
 }
