@@ -73,7 +73,7 @@ public class PlatformSpawner : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.RightShift) && _platformPrefabs.Count > 0)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && _platformPrefabs.Count > 0)
         {
             isDeleteMode = !isDeleteMode;
         }
