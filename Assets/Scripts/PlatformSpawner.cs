@@ -16,10 +16,11 @@ public class PlatformSpawner : MonoBehaviour
     [SerializeField]
     private GameObject[] _platformPrefabs;
 
-    private GameObject _currentPlatform;
-    private GameObject _mainCamera;
+    [SerializeField]
+    private Material _woodOpaque;
 
-    private Color _color;
+    public static GameObject CurrentPlatform;
+    private GameObject _mainCamera;
 
     private float _axisLockValue;
 
@@ -40,6 +41,11 @@ public class PlatformSpawner : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.IsPrepMode == false)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.RightShift))
         {
             isDeleteMode = !isDeleteMode;
@@ -48,15 +54,15 @@ public class PlatformSpawner : MonoBehaviour
         if (isDeleteMode == false)
         {
             _deletePlatformHelperSphere.SetActive(false);
-            if (_currentPlatform)
-                _currentPlatform.SetActive(true);
+            if (CurrentPlatform)
+                CurrentPlatform.SetActive(true);
             CreateMode();
         }
         else
         {
             _deletePlatformHelperSphere.SetActive(true);
-            if (_currentPlatform)
-                _currentPlatform.SetActive(false);
+            if (CurrentPlatform)
+                CurrentPlatform.SetActive(false);
             DeleteMode();
         }
 
@@ -69,7 +75,7 @@ public class PlatformSpawner : MonoBehaviour
             }
             _platformPrefab = _platformPrefabs[_currentScrollIndex];
 
-            Destroy(_currentPlatform);
+            Destroy(CurrentPlatform);
             SpawnPlatform();
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backwards
@@ -81,7 +87,7 @@ public class PlatformSpawner : MonoBehaviour
             }
             _platformPrefab = _platformPrefabs[_currentScrollIndex];
 
-            Destroy(_currentPlatform);
+            Destroy(CurrentPlatform);
             SpawnPlatform();
         }
     }
@@ -105,18 +111,14 @@ public class PlatformSpawner : MonoBehaviour
 
         spawnPos = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
 
-        _currentPlatform = Instantiate(_platformPrefab, spawnPos, Quaternion.identity);
-        _color = _currentPlatform.GetComponent<MeshRenderer>().material.color;
-        _color.a = 0.4f;
-        _currentPlatform.GetComponent<MeshRenderer>().material.color = _color;
+        CurrentPlatform = Instantiate(_platformPrefab, spawnPos, Quaternion.identity);
     }
 
     private void PlacePlatform()
     {
-        _color.a = 1f;
-        _currentPlatform.GetComponent<MeshRenderer>().material.color = _color;
-        _currentPlatform.GetComponent<Platform>().enabled = false;
-        _currentPlatform.GetComponent<Collider>().enabled = true;
+        CurrentPlatform.GetComponent<MeshRenderer>().material = _woodOpaque;
+        CurrentPlatform.GetComponent<Platform>().enabled = false;
+        CurrentPlatform.GetComponent<Collider>().enabled = true;
     }
 
     private void CreateMode()
@@ -143,7 +145,7 @@ public class PlatformSpawner : MonoBehaviour
             {
                 if (hit.collider.GetComponent<Wall>())
                 {
-                    _currentPlatform.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
+                    CurrentPlatform.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
                 }
             }
         }
@@ -153,8 +155,14 @@ public class PlatformSpawner : MonoBehaviour
 
     private void DeleteMode()
     {
-        Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit);
-        _deletePlatformHelperSphere.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
+        if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit))
+        {
+            if (hit.collider.GetComponent<Wall>())
+            {
+
+                _deletePlatformHelperSphere.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
+            }
+        }
         Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * 100, Color.red);
     }
 }

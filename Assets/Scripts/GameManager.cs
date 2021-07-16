@@ -13,29 +13,33 @@ public class GameManager : MonoBehaviour
 
     private Vector3 _ballInitialPos;
 
-    public bool _isPrepMode;
+    public static bool IsPrepMode;
 
     private void Start()
     {
         _ballInitialPos = _ball.transform.position;
-        _isPrepMode = true;
+        IsPrepMode = true;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && _isPrepMode)
+        if (Input.GetKeyDown(KeyCode.Return) && IsPrepMode)
         {
             _ball.SetActive(true);
+            _ball.GetComponent<Rigidbody>().useGravity = true;
             _prepCamera.SetActive(false);
             _gameCamera.SetActive(true);
-            _isPrepMode = false;
+            PlatformSpawner.CurrentPlatform.SetActive(false);
+            IsPrepMode = false;
         }
-        else if (Input.GetKeyDown(KeyCode.Return) && !_isPrepMode)
+        else if (Input.GetKeyDown(KeyCode.Return) && !IsPrepMode)
         {
             _ball.SetActive(false);
+            _ball.GetComponent<Rigidbody>().useGravity = false;
             _prepCamera.SetActive(true);
             _gameCamera.SetActive(false);
-            _isPrepMode = true;
+            PlatformSpawner.CurrentPlatform.SetActive(true);
+            IsPrepMode = true;
         }
 
         if (Input.GetKeyDown(KeyCode.R))
