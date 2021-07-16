@@ -139,8 +139,13 @@ public class PlatformSpawner : MonoBehaviour
 
         if (_canPlace)
         {
-            Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit);
-            _currentPlatform.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
+            if (Physics.Raycast(_mainCamera.transform.position, _mainCamera.transform.forward * 100, out hit))
+            {
+                if (hit.collider.GetComponent<Wall>())
+                {
+                    _currentPlatform.transform.position = new Vector3(hit.point.x, hit.point.y, _axisLockValue);
+                }
+            }
         }
 
         Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * 100, Color.blue);
