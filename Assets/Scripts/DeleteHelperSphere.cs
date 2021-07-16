@@ -5,6 +5,9 @@ public class DeleteHelperSphere : MonoBehaviour
     private GameObject _deleteThisObject;
     private bool _canDelete;
 
+    [SerializeField]
+    private AudioSource _plankRemovedAudioSource;
+
     private void Start()
     {
         _canDelete = false;
@@ -56,6 +59,10 @@ public class DeleteHelperSphere : MonoBehaviour
                     PlatformSpawner.AddToPrefabList.Invoke("FlatPlank");
                 }
             }
+
+            _plankRemovedAudioSource.Stop();
+            _plankRemovedAudioSource.Play();
+
             Destroy(_deleteThisObject);
         }
     }

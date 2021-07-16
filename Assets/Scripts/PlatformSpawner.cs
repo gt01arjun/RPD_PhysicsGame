@@ -21,12 +21,18 @@ public class PlatformSpawner : MonoBehaviour
     [SerializeField]
     private Material _woodOpaque;
 
-    public static GameObject CurrentPlatform;
-    private GameObject _mainCamera;
-
     [SerializeField]
     private float _axisLockValue;
 
+    [SerializeField]
+    private AudioSource _mouseScrollAudioSource;
+
+    [SerializeField]
+    private AudioSource _plankAttachedAudioSource;
+
+    public static GameObject CurrentPlatform;
+    private GameObject _mainCamera;
+    
     private RaycastHit hit;
 
     private bool isDeleteMode;
@@ -96,6 +102,8 @@ public class PlatformSpawner : MonoBehaviour
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0f && _platformPrefabs.Count > 0) // forward
         {
+            _mouseScrollAudioSource.Stop();
+            _mouseScrollAudioSource.Play();
             _currentScrollIndex++;
             if (_currentScrollIndex > _platformPrefabs.Count - 1)
             {
@@ -110,6 +118,8 @@ public class PlatformSpawner : MonoBehaviour
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f && _platformPrefabs.Count > 0) // backwards
         {
+            _mouseScrollAudioSource.Stop();
+            _mouseScrollAudioSource.Play();
             _currentScrollIndex--;
             if (_currentScrollIndex < 0)
             {
@@ -150,6 +160,9 @@ public class PlatformSpawner : MonoBehaviour
         CurrentPlatform.GetComponent<MeshRenderer>().material = _woodOpaque;
         CurrentPlatform.GetComponent<Platform>().enabled = false;
         CurrentPlatform.GetComponent<Collider>().enabled = true;
+
+        _plankAttachedAudioSource.Stop();
+        _plankAttachedAudioSource.Play();
 
         if (CurrentPlatform.CompareTag("HalfPlank"))
         {

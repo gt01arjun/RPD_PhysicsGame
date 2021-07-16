@@ -53,6 +53,12 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private TMP_Text _retriesLeftText;
 
+    [SerializeField]
+    private AudioSource _winAudioSource;
+
+    [SerializeField]
+    private AudioSource _loseAudioSource;
+
     private int _currentLevel;
     private int _maxLevel;
 
@@ -132,6 +138,7 @@ public class LevelManager : MonoBehaviour
         IsGameOver = true;
         _winScreen.SetActive(true);
         _inGameScreen.SetActive(false);
+        _winAudioSource.Play();
 
         if (_currentLevel <= 3)
         {
@@ -159,6 +166,7 @@ public class LevelManager : MonoBehaviour
         IsGameOver = true;
         _loseScreen.SetActive(true);
         _inGameScreen.SetActive(false);
+        _loseAudioSource.Play();
         Time.timeScale = 0f;
     }
 
