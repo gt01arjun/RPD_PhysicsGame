@@ -11,6 +11,22 @@ public class LevelManager : MonoBehaviour
     public static bool IsGameOver;
 
     [SerializeField]
+    private GameObject _ball;
+
+    [SerializeField]
+    private GameObject _prepCamera;
+
+    [SerializeField]
+    private GameObject _gameCamera;
+
+    [SerializeField]
+    private GameObject _deletePlatformHelperSphere;
+
+    private Vector3 _ballInitialPos;
+
+    public static bool IsPrepMode;
+
+    [SerializeField]
     private GameObject _winScreen;
 
     [SerializeField]
@@ -49,19 +65,20 @@ public class LevelManager : MonoBehaviour
         GameLose.AddListener(Lose);
         GameWin.AddListener(Win);
         IsGameOver = false;
-        //_currentLevel = PlayerPrefs.GetInt("CURRENTLEVEL");
-        //_maxLevel = PlayerPrefs.GetInt("MAXLEVEL");
+        _currentLevel = 2;
+        _currentLevel = PlayerPrefs.GetInt("CURRENTLEVEL");
+        _maxLevel = PlayerPrefs.GetInt("MAXLEVEL");
 
-        //_levels[_currentLevel - 1].SetActive(true);
+        _levels[_currentLevel - 1].SetActive(true);
 
-        //CurvedPlankCounter = _levelData[_currentLevel - 1].CurvedPlankCounter;
-        //HalfPlankCounter = _levelData[_currentLevel - 1].HalfPlankCounter;
-        //FlatPlankCounter = _levelData[_currentLevel - 1].FlatPlankCounter;
+        CurvedPlankCounter = _levelData[_currentLevel - 1].CurvedPlankCounter;
+        HalfPlankCounter = _levelData[_currentLevel - 1].HalfPlankCounter;
+        FlatPlankCounter = _levelData[_currentLevel - 1].FlatPlankCounter;
+        RetriesLeftCounter = _levelData[_currentLevel - 1].RetriesLeft;
 
-        CurvedPlankCounter = 3;
-        HalfPlankCounter = 3;
-        FlatPlankCounter = 3;
-        RetriesLeftCounter = 3;
+        _ballInitialPos = _levelData[_currentLevel - 1].BallPosition;
+        _ball.transform.position = _ballInitialPos;
+        IsPrepMode = true;
     }
 
     private void Update()
@@ -70,6 +87,27 @@ public class LevelManager : MonoBehaviour
         _halfPlankText.text = $"HALF PLANKS         {HalfPlankCounter}";
         _flatPlankText.text = $"FLAT PLANKS          {FlatPlankCounter}";
         _retriesLeftText.text = $"RETRIES LEFT          {RetriesLeftCounter}";
+
+        if (Input.GetKeyDown(KeyCode.Return) && IsPrepMode)
+        {
+            _ball.GetComponent<Rigidbody>().useGravity = true;
+            _prepCamera.SetActive(false);
+            _gameCamera.SetActive(true);
+            PlatformSpawner.CurrentPlatform.SetActive(false);
+            IsPrepMode = false;
+            _deletePlatformHelperSphere.SetActive(false);
+            LevelManager.RetriesLeftCounter--;
+        }
+        else if (Input.GetKeyDown(KeyCode.Return) && !IsPrepMode)
+        {
+            _ball.GetComponent<Rigidbody>().useGravity = false;
+            _prepCamera.SetActive(true);
+            _gameCamera.SetActive(false);
+            PlatformSpawner.CurrentPlatform.SetActive(true);
+            IsPrepMode = true;
+
+            ResetBall();
+        }
     }
 
     private void Win()
@@ -119,5 +157,12 @@ public class LevelManager : MonoBehaviour
     public void RetryLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void ResetBall()
+    {
+        _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        _ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        _ball.transform.position = _ballInitialPos;
     }
 }

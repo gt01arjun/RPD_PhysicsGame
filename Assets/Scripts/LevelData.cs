@@ -6,4 +6,7 @@ public class LevelData : ScriptableObject
     public int CurvedPlankCounter;
     public int HalfPlankCounter;
     public int FlatPlankCounter;
+    public int RetriesLeft;
+
+    public Vector3 BallPosition;
 }

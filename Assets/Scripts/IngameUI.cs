@@ -1,19 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IngameUI : MonoBehaviour
 {
-
     [SerializeField]
     private GameObject _ingameControls;
     [SerializeField]
     private GameObject _simulationControls;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (GameManager.IsPrepMode)
+        if (LevelManager.IsPrepMode)
         {
             _ingameControls.SetActive(true);
         }

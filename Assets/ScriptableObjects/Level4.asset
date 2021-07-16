@@ -15,3 +15,5 @@ MonoBehaviour:
   CurvedPlankCounter: 2
   HalfPlankCounter: 1
   FlatPlankCounter: 2
+  RetriesLeft: 10
+  BallPosition: {x: -4.257, y: 1.254, z: 28.658}
