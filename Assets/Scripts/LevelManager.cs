@@ -68,7 +68,6 @@ public class LevelManager : MonoBehaviour
         GameLose.AddListener(Lose);
         GameWin.AddListener(Win);
         IsGameOver = false;
-        _currentLevel = 2;
         _currentLevel = PlayerPrefs.GetInt("CURRENTLEVEL");
         _maxLevel = PlayerPrefs.GetInt("MAXLEVEL");
 

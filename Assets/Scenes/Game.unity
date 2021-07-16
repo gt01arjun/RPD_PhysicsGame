@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 24a52e4f1fb95084cbe66d7e7c8d903e, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -1033,7 +1033,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 2.4435958e-30, w: 2.2e-44}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -3451,6 +3451,7 @@ MonoBehaviour:
   _deletePlatformHelperSphere: {fileID: 526457897}
   _winScreen: {fileID: 2015934628}
   _loseScreen: {fileID: 751800612}
+  _inGameScreen: {fileID: 0}
   _levels:
   - {fileID: 1225474358}
   - {fileID: 1578162233}
