@@ -2293,6 +2293,7 @@ MonoBehaviour:
   _deletePlatformHelperSphere: {fileID: 526457897}
   _platformPrefabs:
   - {fileID: 5042075581225574164, guid: 204af8edd8ac96648bda36ff266a764a, type: 3}
+  - {fileID: 8883023245234375013, guid: 34b655a6a22b45f40b33ac0bba516926, type: 3}
 --- !u!4 &1337809649
 Transform:
   m_ObjectHideFlags: 0
