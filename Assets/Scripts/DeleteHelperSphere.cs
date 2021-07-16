@@ -32,8 +32,6 @@ public class DeleteHelperSphere : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && _canDelete)
         {
-            Destroy(_deleteThisObject);
-
             if (_deleteThisObject.CompareTag("HalfPlank"))
             {
                 LevelManager.HalfPlankCounter++;
@@ -59,5 +57,7 @@ public class DeleteHelperSphere : MonoBehaviour
                 }
             }
         }
+
+        Destroy(_deleteThisObject);
     }
 }

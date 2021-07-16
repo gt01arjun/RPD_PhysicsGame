@@ -30,11 +30,15 @@ public class PrepCameraMovement : MonoBehaviour
     [SerializeField]
     private float _zMax;
 
+    private bool _hasMoved;
+
     private void Start()
     {
         yaw = 0.0f;
         pitch = 0.0f;
         Cursor.lockState = CursorLockMode.Locked;
+        transform.rotation = new Quaternion(0, 0, 0, 0);
+        _hasMoved = false;
     }
 
     private void Update()
@@ -44,6 +48,11 @@ public class PrepCameraMovement : MonoBehaviour
 
         transform.position += Input.GetAxis("Horizontal") * transform.right * Time.deltaTime * _moveSpeed;
         transform.position += Input.GetAxis("Vertical") * transform.forward * Time.deltaTime * _moveSpeed;
+
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        {
+            _hasMoved = true;
+        }
 
         float yDir = 0;
 
@@ -58,12 +67,12 @@ public class PrepCameraMovement : MonoBehaviour
 
         transform.position = new Vector3(x, y, z);
 
-        yaw += _rotateSpeed * Input.GetAxis("Mouse X") * Time.deltaTime;
-        pitch -= _rotateSpeed * Input.GetAxis("Mouse Y") * Time.deltaTime;
+        if (_hasMoved)
+        {
+            yaw += _rotateSpeed * Input.GetAxis("Mouse X") * Time.deltaTime;
+            pitch -= _rotateSpeed * Input.GetAxis("Mouse Y") * Time.deltaTime;
 
-        //yaw = Mathf.Clamp(yaw, -30f, 30f);
-        //pitch = Mathf.Clamp(pitch, -30f, 30f);
-
-        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+            transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        }
     }
 }
