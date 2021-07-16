@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     public static UnityEvent GameWin = new UnityEvent();
 
     public static bool IsGameOver;
+    public static bool IsGamePaused;
 
     [SerializeField]
     private GameObject _ball;
@@ -31,6 +32,9 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField]
     private GameObject _loseScreen;
+
+    [SerializeField]
+    private GameObject _pauseScreen;
 
     [SerializeField]
     private GameObject _inGameScreen;
@@ -74,6 +78,7 @@ public class LevelManager : MonoBehaviour
         GameLose.AddListener(Lose);
         GameWin.AddListener(Win);
         IsGameOver = false;
+        IsGamePaused = false;
         _currentLevel = PlayerPrefs.GetInt("CURRENTLEVEL");
         _maxLevel = PlayerPrefs.GetInt("MAXLEVEL");
 
@@ -91,6 +96,9 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
+        if (IsGamePaused)
+            return;
+
         _curvedPlankText.text = $"CURVED PLANKS     {CurvedPlankCounter}";
         _halfPlankText.text = $"HALF PLANKS         {HalfPlankCounter}";
         _flatPlankText.text = $"FLAT PLANKS          {FlatPlankCounter}";
@@ -126,6 +134,15 @@ public class LevelManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             PlayerPrefs.DeleteAll();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Time.timeScale = 0f;
+            _pauseScreen.SetActive(true);
+            _inGameScreen.SetActive(false);
+            Cursor.lockState = CursorLockMode.None;
+            IsGamePaused = true;
         }
     }
 
@@ -183,6 +200,15 @@ public class LevelManager : MonoBehaviour
     public void RetryLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ResumeLevel()
+    {
+        Time.timeScale = 1f;
+        _inGameScreen.SetActive(true);
+        _pauseScreen.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        IsGamePaused = false;
     }
 
     private void ResetBall()

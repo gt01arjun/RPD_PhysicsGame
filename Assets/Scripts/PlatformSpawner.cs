@@ -68,6 +68,9 @@ public class PlatformSpawner : MonoBehaviour
 
     private void Update()
     {
+        if (LevelManager.IsGamePaused)
+            return;
+
         if (LevelManager.IsPrepMode == false)
         {
             return;

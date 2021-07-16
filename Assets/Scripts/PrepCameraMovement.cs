@@ -43,6 +43,9 @@ public class PrepCameraMovement : MonoBehaviour
 
     private void Update()
     {
+        if (LevelManager.IsGamePaused)
+            return;
+
         if (Input.GetMouseButton(1))
             return;
 
